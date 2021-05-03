@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+
+  <title>Pantograph test</title>
+
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+
+
+</head>
+<body>
+
+<h1>Pantograph Test</h1>
+
+<div class="btn btn-default js-send-message">
+  Send Message
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+
+<script>
+
+function loadPantograph () {
+
+    let tomoWeb3;
+    let address;
+
+    // The variable use to check whether already install Pantograph extension or not
+    if (!window.tomochain) {
+      window.alert('Please install Pantograph first.');
+      return;
+    }
+
+    if (!tomoWeb3) {
+      try {
+        // Request account access if needed
+        window.tomochain.enable().then(function(addresses) {
+          address = addresses[0].toLowerCase()
+          tomoWeb3 = new Web3(window.tomochain);
+        });
+
+        // We don't know window.web3 version, so we use our own instance of Web3
+        // with the injected provider given by Pantograph
+        
+      } catch (error) {
+        window.alert('You need to allow Pantograph.');
+        return;
+      }
+    }
+
+}
+
+function sendMessage() {
+    // sign Dapps to TomoChain
+    tomoWeb3.eth.personal.sign('Sign Message', publicAddress, (err, signature) => {
+          if (err) return resolve(err)
+          return resolve({ address, signature })
+    })
+}
+
+
+loadPantograph();
+
+
+$('.js-send-message').click(function(){
+  sendMessage();
+})
+</script>
+
+</body>
+</html>
